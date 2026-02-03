@@ -1,0 +1,207 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Store {
+  id                    Int      @id @default(autoincrement())
+  name                  String   @db.VarChar(255)
+  slug                  String   @unique @db.VarChar(255)
+  logoUrl               String?  @map("logo_url") @db.VarChar(500)
+  websiteUrl            String   @map("website_url") @db.VarChar(500)
+  affiliateProgramName  String?  @map("affiliate_program_name") @db.VarChar(255)
+  affiliateBaseUrl      String?  @map("affiliate_base_url") @db.VarChar(500)
+  status                StoreStatus @default(ACTIVE)
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+  
+  deals                 Deal[]
+
+  @@map("stores")
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(255)
+  slug        String   @unique @db.VarChar(255)
+  parentId    Int?     @map("parent_id")
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  parent      Category?  @relation("CategoryToParent", fields: [parentId], references: [id], onDelete: Cascade)
+  children    Category[] @relation("CategoryToParent")
+  dealCategories DealCategory[]
+
+  @@map("categories")
+}
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  slug      String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  dealTags  DealTag[]
+
+  @@map("tags")
+}
+
+model Deal {
+  id                Int      @id @default(autoincrement())
+  title             String   @db.VarChar(500)
+  slug              String   @unique @db.VarChar(500)
+  storeId           Int      @map("store_id")
+  shortDescription  String   @map("short_description") @db.Text
+  longDescription   String?  @map("long_description") @db.Text
+  productImageUrl   String?  @map("product_image_url") @db.VarChar(500)
+  productUrl        String?  @map("product_url") @db.VarChar(500)
+  affiliateUrl      String   @map("affiliate_url") @db.VarChar(500)
+  couponCode        String?  @map("coupon_code") @db.VarChar(100)
+  originalPrice     Decimal  @map("original_price") @db.Decimal(10, 2)
+  dealPrice         Decimal  @map("deal_price") @db.Decimal(10, 2)
+  currency          String   @default("INR") @db.VarChar(10)
+  discountPercent   Decimal  @map("discount_percent") @db.Decimal(5, 2)
+  startsAt          DateTime? @map("starts_at")
+  expiresAt         DateTime? @map("expires_at")
+  status            DealStatus @default(DRAFT)
+  isFeatured        Boolean  @default(false) @map("is_featured")
+  createdBy         Int      @map("created_by")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  
+  store             Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  creator           Admin    @relation(fields: [createdBy], references: [id])
+  dealCategories    DealCategory[]
+  dealTags          DealTag[]
+  dealClicks        DealClick[]
+  priceHistory      DealPriceHistory[]
+
+  @@index([storeId])
+  @@index([createdBy])
+  @@index([status])
+  @@index([isFeatured])
+  @@map("deals")
+}
+
+model DealCategory {
+  id         Int      @id @default(autoincrement())
+  dealId     Int      @map("deal_id")
+  categoryId Int      @map("category_id")
+  
+  deal       Deal     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([dealId, categoryId])
+  @@index([dealId])
+  @@index([categoryId])
+  @@map("deal_categories")
+}
+
+model DealTag {
+  id     Int  @id @default(autoincrement())
+  dealId Int  @map("deal_id")
+  tagId  Int  @map("tag_id")
+  
+  deal   Deal @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([dealId, tagId])
+  @@index([dealId])
+  @@index([tagId])
+  @@map("deal_tags")
+}
+
+model Admin {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(255)
+  email       String   @unique @db.VarChar(255)
+  passwordHash String  @map("password_hash") @db.VarChar(255)
+  role        AdminRole @default(EDITOR)
+  status      AdminStatus @default(ACTIVE)
+  lastLoginAt DateTime? @map("last_login_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  deals       Deal[]
+
+  @@map("admins")
+}
+
+model DealClick {
+  id        Int      @id @default(autoincrement())
+  dealId    Int      @map("deal_id")
+  clickedAt DateTime @default(now()) @map("clicked_at")
+  ipAddress String?  @map("ip_address") @db.VarChar(45)
+  userAgent String?  @map("user_agent") @db.VarChar(500)
+  referrer  String?  @db.VarChar(500)
+  subId     String?  @map("sub_id") @db.VarChar(100)
+  
+  deal      Deal     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  @@index([dealId])
+  @@index([clickedAt])
+  @@map("deal_clicks")
+}
+
+model Page {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique @db.VarChar(255)
+  title       String   @db.VarChar(500)
+  contentHtml String   @map("content_html") @db.Text
+  status      PageStatus @default(DRAFT)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("pages")
+}
+
+model DealPriceHistory {
+  id         Int      @id @default(autoincrement())
+  dealId     Int      @map("deal_id")
+  recordedAt DateTime @default(now()) @map("recorded_at")
+  price      Decimal  @db.Decimal(10, 2)
+  source     String   @default("manual") @db.VarChar(50)
+  
+  deal       Deal     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  @@index([dealId])
+  @@index([recordedAt])
+  @@map("deal_price_history")
+}
+
+// Enums
+enum StoreStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum DealStatus {
+  DRAFT
+  PUBLISHED
+  EXPIRED
+  ARCHIVED
+}
+
+enum AdminRole {
+  ADMIN
+  EDITOR
+}
+
+enum AdminStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum PageStatus {
+  DRAFT
+  PUBLISHED
+}
