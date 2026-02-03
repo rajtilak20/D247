@@ -1,0 +1,30 @@
+.static-page {
+  min-height: 70vh;
+}
+
+.static-page h1 {
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+}
+
+.content {
+  max-width: 800px;
+  line-height: 1.8;
+}
+
+.content h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #646cff;
+  font-size: 1.5rem;
+}
+
+.content p {
+  margin-bottom: 1rem;
+  color: #ccc;
+}
+
+.content em {
+  color: #888;
+  font-size: 0.9rem;
+}

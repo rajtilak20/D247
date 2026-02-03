@@ -1,0 +1,56 @@
+.admin-deals {
+  min-height: 70vh;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.create-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #4ade80;
+  color: #0a0a0a;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.create-button:hover {
+  background-color: #22c55e;
+}
+
+.admin-notice {
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.admin-notice h2 {
+  color: #646cff;
+  margin-bottom: 1rem;
+}
+
+.admin-notice ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+}
+
+.admin-notice ul li {
+  padding: 0.5rem 0;
+  color: #ccc;
+}
+
+.admin-notice ul li:before {
+  content: "✓ ";
+  color: #4ade80;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
