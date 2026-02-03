@@ -66,10 +66,11 @@ export const dealController = {
       }
 
       // Extract metadata from request
+      const referrer = req.headers['referer'] || req.headers['referrer'];
       const metadata = {
         ipAddress: req.ip || req.socket.remoteAddress,
         userAgent: req.headers['user-agent'],
-        referrer: req.headers['referer'] || req.headers['referrer'],
+        referrer: Array.isArray(referrer) ? referrer[0] : referrer,
         subId: req.body.subId,
       };
 

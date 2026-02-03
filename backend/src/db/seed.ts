@@ -335,7 +335,7 @@ async function main() {
     const deal = await prisma.deal.upsert({
       where: { slug: dealInfo.slug },
       update: {},
-      create: dealInfo,
+      create: dealInfo as any,
     });
 
     // Add categories
