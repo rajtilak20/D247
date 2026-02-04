@@ -20,9 +20,14 @@ export interface Deal {
   expiresAt?: string;
   status: string;
   isFeatured: boolean;
+  isHot?: boolean;
   createdAt: string;
   updatedAt: string;
   store?: Store;
+  category?: Category;
+  dealTags?: Array<{
+    tag: Tag;
+  }>;
 }
 
 export interface Store {

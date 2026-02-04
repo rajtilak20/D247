@@ -1,35 +1,15 @@
 import { Link } from 'react-router-dom';
 import Badge from './ui/Badge';
+import type { Deal } from '../services/api';
 
 interface DealCardProps {
-  deal: {
-    id: number;
-    title: string;
-    slug: string;
-    originalPrice: string;
-    dealPrice: string;
-    discountPercent: string;
-    productImageUrl: string | null;
-    isFeatured: boolean;
-    createdAt: string;
-    store: {
-      name: string;
-      slug: string;
-      logoUrl: string | null;
-    };
-    dealTags?: Array<{
-      tag: {
-        name: string;
-        slug: string;
-      };
-    }>;
-  };
+  deal: Deal;
   layout?: 'grid' | 'list';
 }
 
 export default function DealCard({ deal, layout = 'grid' }: DealCardProps) {
-  const formatPrice = (price: string) => {
-    return `₹${parseFloat(price).toLocaleString('en-IN')}`;
+  const formatPrice = (price: number) => {
+    return `₹${price.toLocaleString('en-IN')}`;
   };
 
   const getTimeAgo = (date: string) => {
@@ -70,12 +50,14 @@ export default function DealCard({ deal, layout = 'grid' }: DealCardProps) {
           {/* Content */}
           <div className="flex-1 min-w-0">
             {/* Store */}
-            <div className="flex items-center gap-2 mb-1">
-              {deal.store.logoUrl && (
-                <img src={deal.store.logoUrl} alt={deal.store.name} className="w-4 h-4 object-contain" />
-              )}
-              <span className="text-xs text-gray-500">{deal.store.name}</span>
-            </div>
+            {deal.store && (
+              <div className="flex items-center gap-2 mb-1">
+                {deal.store.logoUrl && (
+                  <img src={deal.store.logoUrl} alt={deal.store.name} className="w-4 h-4 object-contain" />
+                )}
+                <span className="text-xs text-gray-500">{deal.store.name}</span>
+              </div>
+            )}
 
             {/* Title */}
             <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-2">
@@ -86,7 +68,7 @@ export default function DealCard({ deal, layout = 'grid' }: DealCardProps) {
             <div className="flex items-center gap-2 mb-2">
               <span className="text-lg font-bold text-gray-900">{formatPrice(deal.dealPrice)}</span>
               <span className="text-xs text-gray-500 line-through">{formatPrice(deal.originalPrice)}</span>
-              <Badge variant="discount">{parseFloat(deal.discountPercent).toFixed(0)}% OFF</Badge>
+              <Badge variant="discount">{deal.discountPercent}% OFF</Badge>
             </div>
 
             {/* Tags & Time */}
@@ -126,20 +108,22 @@ export default function DealCard({ deal, layout = 'grid' }: DealCardProps) {
           </div>
         )}
         <div className="absolute top-2 left-2">
-          <Badge variant="discount">{parseFloat(deal.discountPercent).toFixed(0)}% OFF</Badge>
+          <Badge variant="discount">{deal.discountPercent}% OFF</Badge>
         </div>
       </div>
 
       {/* Content */}
       <div className="p-3">
         {/* Store */}
-        <div className="flex items-center gap-2 mb-2">
-          {deal.store.logoUrl && (
-            <img src={deal.store.logoUrl} alt={deal.store.name} className="w-5 h-5 object-contain" />
-          )}
-          <span className="text-xs text-gray-500 font-medium">{deal.store.name}</span>
-          <span className="text-xs text-gray-400">• {getTimeAgo(deal.createdAt)}</span>
-        </div>
+        {deal.store && (
+          <div className="flex items-center gap-2 mb-2">
+            {deal.store.logoUrl && (
+              <img src={deal.store.logoUrl} alt={deal.store.name} className="w-5 h-5 object-contain" />
+            )}
+            <span className="text-xs text-gray-500 font-medium">{deal.store.name}</span>
+            <span className="text-xs text-gray-400">• {getTimeAgo(deal.createdAt)}</span>
+          </div>
+        )}
 
         {/* Title */}
         <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-2 min-h-[2.5rem]">

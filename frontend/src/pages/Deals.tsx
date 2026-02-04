@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { getDeals, getCategories, getStores } from '../services/api';
-import type { Deal, Category, Store } from '../services/api';
+import { getDeals } from '../services/api';
+import type { Deal } from '../services/api';
+import type { FilterValues } from '../components/FilterPanel';
+import FilterPanel from '../components/FilterPanel';
 import DealCard from '../components/DealCard';
-import FilterPanel, { FilterValues } from '../components/FilterPanel';
 import Tabs from '../components/ui/Tabs';
 import Button from '../components/ui/Button';
 
