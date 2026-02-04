@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getDeals, Deal } from '../services/api';
+import { getDeals } from '../services/api';
+import type { Deal } from '../services/api';
 import './Home.css';
 
 export default function Home() {

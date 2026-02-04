@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getDealBySlug, recordDealClick, Deal } from '../services/api';
+import { getDealBySlug, recordDealClick } from '../services/api';
+import type { Deal } from '../services/api';
 import './DealDetail.css';
 
 export default function DealDetail() {
