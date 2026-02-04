@@ -12,14 +12,13 @@ import Contact from './pages/Contact';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Terms from './pages/Terms';
 import Disclaimer from './pages/Disclaimer';
-import './App.css';
 
 function App() {
   return (
     <Router>
-      <div className="app">
+      <div className="min-h-screen flex flex-col bg-gray-50">
         <Header />
-        <main className="main-content">
+        <main className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/deals" element={<Deals />} />

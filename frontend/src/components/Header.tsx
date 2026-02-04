@@ -14,53 +14,53 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-md">
+    <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-blue-600">Deals247</span>
-            <span className="text-xl">💰</span>
+          <Link to="/" className="flex items-center space-x-2 group">
+            <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">Deals247</span>
+            <span className="text-xl group-hover:scale-110 transition-transform">🔥</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-gray-700 hover:text-blue-600 font-medium">
-              New Deals
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link to="/" className="text-sm text-gray-700 hover:text-orange-500 font-medium transition-colors">
+              🆕 New
             </Link>
-            <Link to="/deals?featured=true" className="text-gray-700 hover:text-orange-500 font-medium">
-              Hot Deals
+            <Link to="/deals?featured=true" className="text-sm text-gray-700 hover:text-red-500 font-medium transition-colors">
+              🔥 Hot
             </Link>
-            <Link to="/deals?sort=popular" className="text-gray-700 hover:text-blue-600 font-medium">
-              Popular
+            <Link to="/deals?sort=popular" className="text-sm text-gray-700 hover:text-orange-500 font-medium transition-colors">
+              ⭐ Popular
             </Link>
-            <Link to="/stores" className="text-gray-700 hover:text-blue-600 font-medium">
-              Stores
+            <Link to="/stores" className="text-sm text-gray-700 hover:text-orange-500 font-medium transition-colors">
+              🏪 Stores
             </Link>
-            <Link to="/deals" className="text-gray-700 hover:text-blue-600 font-medium">
-              Categories
+            <Link to="/deals" className="text-sm text-gray-700 hover:text-orange-500 font-medium transition-colors">
+              📂 Categories
             </Link>
           </nav>
 
           {/* Desktop Search */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-3">
             <form onSubmit={handleSearch} className="relative">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search deals..."
-                className="w-64 px-4 py-2 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-48 lg:w-64 px-4 py-1.5 pr-10 text-sm rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               />
-              <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-500 transition-colors">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
             </form>
             
-            <Link to="/admin/login" className="text-gray-700 hover:text-blue-600">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <Link to="/admin/login" className="text-gray-600 hover:text-orange-500 transition-colors">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </Link>
